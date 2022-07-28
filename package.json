@@ -2,11 +2,14 @@
   "name": "vicue",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://egoistixx.github.io/vicue/",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@types/styled-components": "^5.1.25",

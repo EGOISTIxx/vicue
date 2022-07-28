@@ -19,8 +19,6 @@ const BeerPage: NextPage = ({ beerData }: any) => {
     [router.query.beer]
   )
 
-  console.log(beerData)
-
   return (
     <Layout isHiddenSearch={true} breadcrumb={breadcrumbs}>
       <Beer beer={beerData[0]} />
@@ -28,7 +26,28 @@ const BeerPage: NextPage = ({ beerData }: any) => {
   )
 }
 
-export const getServerSideProps = async (context: any) => {
+export const getStaticPaths = async () => {
+  const res = await axios.get(`${BEER_API}/beers`)
+  const beersData = await res.data
+
+  const paths = beersData.map(
+    (beer: { name: string; id: number }) => {
+      return {
+        params: {
+          beer: `${beer.name}`,
+          id: `${beer.id}`,
+        },
+      }
+    }
+  )
+
+  return {
+    paths,
+    fallback: false,
+  }
+}
+
+export const getStaticProps = async (context: any) => {
   const res = await axios.get(
     `${BEER_API}/beers/${context.params.id}`
   )

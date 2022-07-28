@@ -7,6 +7,8 @@ const nextConfig = {
     loader: 'akamai',
     path: '',
   },
+  basePath: '/vicue',
+  assetPrefix: '/vicue',
   exportPathMap: () => {
     return {
       '/': { page: '/' },

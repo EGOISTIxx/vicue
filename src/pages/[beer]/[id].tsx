@@ -27,19 +27,36 @@ const BeerPage: NextPage = ({ beerData }: any) => {
 }
 
 export const getStaticPaths = async () => {
-  const res = await axios.get(`${BEER_API}/beers`)
-  const beersData = await res.data
+  const urls = [
+    'https://api.punkapi.com/v2/beers?page=1&per_page=80',
+    'https://api.punkapi.com/v2/beers?page=2&per_page=80',
+    'https://api.punkapi.com/v2/beers?page=3&per_page=80',
+    'https://api.punkapi.com/v2/beers?page=4&per_page=80',
+    'https://api.punkapi.com/v2/beers?page=5&per_page=80',
+  ]
 
-  const paths = beersData.map(
-    (beer: { name: string; id: number }) => {
+  const arrayFetchData = urls.map((url) =>
+    fetch(url).then((res) => res.json())
+  )
+
+  const beersData = await Promise.allSettled(
+    arrayFetchData
+  ).then((res) => {
+    return res.map((item: any) => {
+      return item.value
+    })
+  })
+
+  const paths = beersData
+    .flat()
+    .map((beer: { name: string; id: number }) => {
       return {
         params: {
           beer: `${beer.name}`,
           id: `${beer.id}`,
         },
       }
-    }
-  )
+    })
 
   return {
     paths,

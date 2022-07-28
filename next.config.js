@@ -4,6 +4,13 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: ['*', 'images.punkapi.com'],
+    loader: 'akamai',
+    path: '',
+  },
+  exportPathMap: () => {
+    return {
+      '/': { page: '/' },
+    }
   },
 }
 
